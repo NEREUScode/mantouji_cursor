@@ -287,6 +287,7 @@ def get_products():
     # Get query parameters for filtering and search
     search = request.args.get('search', '')
     category = request.args.get('category', '')
+    producer_id = request.args.get('producer_id', type=int)
     min_price = request.args.get('min_price', type=float)
     max_price = request.args.get('max_price', type=float)
     page = request.args.get('page', 1, type=int)
@@ -302,6 +303,9 @@ def get_products():
     
     if category:
         filtered_products = [p for p in filtered_products if p.get('category') == category]
+    
+    if producer_id is not None:
+        filtered_products = [p for p in filtered_products if p.get('producer_id') == producer_id]
     
     if min_price is not None:
         filtered_products = [p for p in filtered_products if p.get('price', 0) >= min_price]

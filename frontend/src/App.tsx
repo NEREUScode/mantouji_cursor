@@ -10,6 +10,7 @@ import Register from "./pages/Auth/Register";
 import ProductList from "./pages/Products/ProductList";
 import ProductDetail from "./pages/Products/ProductDetail";
 import ProductForm from "./pages/Products/ProductForm";
+import MyProducts from "./pages/Products/MyProducts";
 import ProducerDashboard from "./pages/Dashboard/ProducerDashboard";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import ProducerProfile from "./pages/Profile/ProducerProfile";
@@ -44,6 +45,11 @@ function App() {
                              <Route index element={<Home />} />
                              <Route path="products" element={<ProductList />} />
                              <Route path="products/:id" element={<ProductDetail />} />
+                             <Route path="my-products" element={
+                               <ProtectedRoute>
+                                 <MyProducts />
+                               </ProtectedRoute>
+                             } />
                              <Route path="products/new" element={
                                <ProtectedRoute>
                                  <ProductForm />

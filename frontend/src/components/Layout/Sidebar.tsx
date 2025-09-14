@@ -9,6 +9,7 @@ import {
   Heart,
   Users,
   Shield,
+  ShoppingBag,
 } from "lucide-react";
 
 interface NavigationItem {
@@ -47,6 +48,12 @@ const Sidebar: React.FC = () => {
           href: "/favorites",
           icon: Heart,
           roles: ["consumer", "producer", "admin"],
+        },
+        {
+          name: "My Products",
+          href: "/my-products",
+          icon: ShoppingBag,
+          roles: ["producer"],
         },
         {
           name: "Dashboard",
