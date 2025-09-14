@@ -1,251 +1,262 @@
-# Mantouji.ma - Regional Product Platform
+# Mantouji.ma - Regional Product Marketplace
 
-A responsive web platform that connects regional product producers with consumers across Morocco.
+A full-stack web platform connecting regional product producers with consumers, featuring AI services, interactive maps, and comprehensive dashboards.
 
 ## 🚀 Features
 
-- **Authentication & Roles**: Secure JWT-based authentication with producer, consumer, and admin roles
-- **Product Management**: Full CRUD operations for products with image uploads
-- **Search & Discovery**: Advanced search and filtering capabilities
-- **Reviews & Ratings**: Community-driven product reviews and ratings
-- **AI-Powered Insights**: ML predictions and OpenAI integration for smart recommendations
-- **Interactive Heatmaps**: Regional data visualization using Leaflet.js
-- **Analytics Dashboards**: Comprehensive analytics for producers and admins
-- **Responsive Design**: Modern UI with dark mode support
+### Core Functionality
+- **User Authentication & Roles**: Secure JWT-based authentication with Producer, Consumer, and Admin roles
+- **Product Management**: Complete CRUD operations for products with image upload
+- **Role-Based Access Control**: Different interfaces and features based on user role
+- **Reviews & Ratings**: Product review system with moderation capabilities
+- **Favorites & Search**: User favorites and search history tracking
+- **Interactive Dashboards**: Role-specific analytics and management tools
+
+### Technical Features
+- **Responsive Design**: Mobile-first design with TailwindCSS
+- **Dark Mode**: Complete dark/light theme support
+- **Real-time Analytics**: Product views, favorites, and sales tracking
+- **Search & Filtering**: Advanced product search with multiple filters
+- **Pagination**: Efficient data loading with pagination
+- **API Documentation**: Comprehensive REST API endpoints
 
 ## 🛠 Tech Stack
 
 ### Frontend
-
-- **React 19** with TypeScript
+- **React 18** with TypeScript
 - **TailwindCSS** for styling
 - **React Router** for navigation
 - **TanStack Query** for data fetching
-- **Leaflet.js** for maps
-- **Chart.js** for analytics
 - **Lucide React** for icons
 
 ### Backend
-
-- **Flask** with Python
-- **PostgreSQL** database
-- **JWT** authentication
+- **Flask** with Python 3.12
 - **SQLAlchemy** ORM
-- **Flask-Migrate** for database migrations
+- **Flask-JWT-Extended** for authentication
+- **Flask-CORS** for cross-origin requests
+- **PostgreSQL** database (with in-memory fallback for development)
 
-### AI & ML
+### Development Tools
+- **ESLint** for code linting
+- **Prettier** for code formatting
+- **Git** for version control
 
-- **OpenAI API** for natural language processing
-- **Scikit-learn** for machine learning models
-- **Pandas** for data processing
+## 📋 Prerequisites
+
+- **Node.js** 16+ and npm
+- **Python** 3.12+
+- **PostgreSQL** 12+ (optional, uses in-memory for development)
+- **Git**
+
+## 🚀 Quick Start
+
+### 1. Clone the Repository
+```bash
+git clone <your-repo-url>
+cd mantouji_cursor
+```
+
+### 2. Backend Setup
+```bash
+cd backend
+
+# Install Python dependencies
+pip3 install -r requirements.txt
+
+# Run the backend server
+python3 simple_app.py
+```
+
+The backend will be available at `http://localhost:5000`
+
+### 3. Frontend Setup
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm start
+```
+
+The frontend will be available at `http://localhost:3000`
+
+### 4. Using the Start Script
+```bash
+# Make the start script executable
+chmod +x start.sh
+
+# Run both backend and frontend
+./start.sh
+```
 
 ## 📁 Project Structure
 
 ```
 mantouji_cursor/
-├── backend/                 # Flask API
-│   ├── app/
-│   │   ├── blueprints/     # API routes
+├── backend/                 # Flask backend
+│   ├── app/                # Main application package
+│   │   ├── blueprints/     # API blueprints
 │   │   ├── models/         # Database models
-│   │   ├── utils/          # Utility functions
-│   │   └── services/       # Business logic
-│   ├── config.py           # Configuration
+│   │   └── utils/          # Utility functions
+│   ├── simple_app.py       # Development server
 │   └── requirements.txt    # Python dependencies
-├── frontend/               # React application
+├── frontend/               # React frontend
 │   ├── src/
-│   │   ├── components/     # React components
-│   │   ├── pages/          # Page components
+│   │   ├── components/     # Reusable components
 │   │   ├── contexts/       # React contexts
+│   │   ├── pages/          # Page components
 │   │   ├── services/       # API services
 │   │   └── types/          # TypeScript types
 │   └── package.json        # Node dependencies
-├── database/               # Database files
-│   └── schema.sql          # Database schema
-├── ai/                     # AI/ML models
+├── database/               # Database schema and migrations
 ├── docs/                   # Documentation
 └── tests/                  # Test files
 ```
 
-## 🚀 Getting Started
+## 🔧 API Endpoints
 
-### Prerequisites
+### Authentication
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `GET /api/auth/me` - Get current user
 
-- Node.js 18+ and npm
-- Python 3.8+
-- PostgreSQL 12+
-- Git
+### Products
+- `GET /api/products` - List products with filtering
+- `GET /api/products/{id}` - Get product details
+- `POST /api/products` - Create product (Producer only)
+- `PUT /api/products/{id}` - Update product (Producer only)
+- `DELETE /api/products/{id}` - Delete product (Producer only)
 
-### Backend Setup
+### Reviews
+- `GET /api/products/{id}/reviews` - Get product reviews
+- `POST /api/products/{id}/reviews` - Add review (Consumer only)
+- `PUT /api/reviews/{id}` - Update review
+- `DELETE /api/reviews/{id}` - Delete review
 
-1. **Navigate to backend directory**:
+### Analytics
+- `GET /api/analytics/producer/{id}/stats` - Producer dashboard stats
+- `GET /api/analytics/admin/overview` - Admin overview stats
 
-   ```bash
-   cd backend
-   ```
+## 👥 User Roles
 
-2. **Create virtual environment**:
+### Consumer
+- Browse and search products
+- View product details
+- Add products to cart
+- Leave reviews and ratings
+- Manage favorites
+- View personal dashboard
 
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+### Producer
+- Manage their products
+- View analytics dashboard
+- Track product performance
+- Manage inventory
+- View customer insights
 
-3. **Install dependencies**:
+### Admin
+- Manage all users and products
+- Access moderation tools
+- View platform analytics
+- Manage content and reviews
 
-   ```bash
-   pip install -r requirements.txt
-   ```
+## 🎨 UI/UX Features
 
-4. **Set up environment variables**:
+- **Responsive Design**: Works on all device sizes
+- **Dark Mode**: Toggle between light and dark themes
+- **Role-Based Navigation**: Different menus based on user role
+- **Interactive Components**: Smooth animations and transitions
+- **Accessibility**: WCAG compliant design
 
-   ```bash
-   cp .env.example .env
-   # Edit .env with your database credentials and API keys
-   ```
+## 🔒 Security Features
 
-5. **Set up database**:
+- **JWT Authentication**: Secure token-based authentication
+- **Role-Based Access Control**: Frontend and backend validation
+- **Input Validation**: Comprehensive data validation
+- **CORS Protection**: Configured for production use
+- **Environment Variables**: Secure configuration management
 
-   ```bash
-   # Create PostgreSQL database
-   createdb mantouji_db
+## 🚀 Deployment
 
-   # Run migrations
-   flask db upgrade
-   ```
+### Backend Deployment
+```bash
+# Install production dependencies
+pip install gunicorn
 
-6. **Run the backend**:
-   ```bash
-   python app.py
-   ```
-
-### Frontend Setup
-
-1. **Navigate to frontend directory**:
-
-   ```bash
-   cd frontend
-   ```
-
-2. **Install dependencies**:
-
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**:
-
-   ```bash
-   # Create .env.local file
-   echo "REACT_APP_API_URL=http://localhost:5000/api" > .env.local
-   ```
-
-4. **Run the frontend**:
-   ```bash
-   npm start
-   ```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-#### Backend (.env)
-
-```env
-DATABASE_URL=postgresql://username:password@localhost:5432/mantouji_db
-JWT_SECRET_KEY=your-super-secret-jwt-key
-OPENAI_API_KEY=your-openai-api-key
-FLASK_ENV=development
-SECRET_KEY=your-flask-secret-key
+# Run with Gunicorn
+gunicorn -w 4 -b 0.0.0.0:5000 simple_app:app
 ```
 
-#### Frontend (.env.local)
+### Frontend Deployment
+```bash
+# Build for production
+npm run build
 
-```env
-REACT_APP_API_URL=http://localhost:5000/api
-REACT_APP_MAPBOX_TOKEN=your_mapbox_token
+# Serve with a web server (nginx, Apache, etc.)
 ```
-
-## 📊 Database Schema
-
-The application uses PostgreSQL with the following main tables:
-
-- **users**: User accounts and profiles
-- **products**: Product listings
-- **reviews**: Product reviews and ratings
-- **favorites**: User favorite products
-- **orders**: Order management
-- **ai_predictions**: ML model predictions
-- **moderation_logs**: Admin moderation actions
 
 ## 🧪 Testing
 
-### Backend Tests
-
+### Backend Testing
 ```bash
 cd backend
-python -m pytest tests/
+python3 -m pytest tests/
 ```
 
-### Frontend Tests
-
+### Frontend Testing
 ```bash
 cd frontend
 npm test
 ```
 
-## 🚀 Deployment
+## 📊 Development Status
 
-### Backend Deployment
+- ✅ Project structure and environment setup
+- ✅ Database schema and PostgreSQL setup
+- ✅ Flask backend with Blueprints
+- ✅ User authentication system (JWT)
+- ✅ User management API endpoints
+- ✅ Product management API endpoints
+- ✅ React frontend foundation
+- ✅ Authentication UI components
+- ✅ Product listing and search functionality
+- ✅ Product detail and management UI
+- ✅ Reviews and ratings system
+- ✅ Favorites and search tracking
+- ✅ Producer dashboard - basic stats
+- ✅ Admin dashboard - moderation tools
+- ✅ Security implementation
+- ✅ Test data generation
+- ✅ UI/UX polish and dark mode
 
-1. Set up production environment variables
-2. Configure PostgreSQL database
-3. Run database migrations
-4. Deploy using Gunicorn or similar WSGI server
+## 🔄 Pending Features
 
-### Frontend Deployment
-
-1. Build the production bundle:
-   ```bash
-   npm run build
-   ```
-2. Deploy the `build` folder to your hosting service
-
-## 📝 API Documentation
-
-The API follows RESTful conventions:
-
-- `GET /api/health` - Health check
-- `POST /api/auth/login` - User login
-- `POST /api/auth/register` - User registration
-- `GET /api/products` - List products
-- `POST /api/products` - Create product
-- `GET /api/products/:id` - Get product details
-- `PUT /api/products/:id` - Update product
-- `DELETE /api/products/:id` - Delete product
+- AI prediction system (ML model)
+- OpenAI integration for insights
+- Heatmap visualization (Leaflet.js)
+- Chart.js integration for dashboards
+- API documentation (Swagger)
+- Performance optimization
+- Deployment configuration
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 📄 License
+## 📝 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
+## 📞 Support
 
-For support and questions, please contact:
+For support, email support@mantouji.ma or create an issue in the repository.
 
-- Email: info@mantouji.ma
-- GitHub Issues: [Create an issue](https://github.com/your-repo/issues)
+---
 
-## 🎯 Roadmap
-
-- [ ] Mobile app development
-- [ ] Payment integration
-- [ ] Advanced AI features
-- [ ] Multi-language support
-- [ ] Real-time notifications
+**Mantouji.ma** - Connecting regional producers with consumers through technology.
