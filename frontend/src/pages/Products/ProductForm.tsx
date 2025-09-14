@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Save, Upload, X } from "lucide-react";
+import { ArrowLeft, Save, X } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 
 interface ProductFormData {
@@ -61,12 +61,6 @@ const ProductForm: React.FC = () => {
     "Other",
   ];
 
-  useEffect(() => {
-    if (isEdit && id) {
-      fetchProduct();
-    }
-  }, [id, isEdit]);
-
   const fetchProduct = async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/products/${id}`);
@@ -93,6 +87,12 @@ const ProductForm: React.FC = () => {
       console.error("Error fetching product:", error);
     }
   };
+
+  useEffect(() => {
+    if (isEdit && id) {
+      fetchProduct();
+    }
+  }, [id, isEdit]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

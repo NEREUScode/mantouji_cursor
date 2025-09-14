@@ -21,12 +21,6 @@ const ProducerProfile: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (id) {
-      fetchProducerData();
-    }
-  }, [id]);
-
   const fetchProducerData = async () => {
     try {
       setLoading(true);
@@ -46,6 +40,12 @@ const ProducerProfile: React.FC = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (id) {
+      fetchProducerData();
+    }
+  }, [id]);
 
   if (loading) {
     return (

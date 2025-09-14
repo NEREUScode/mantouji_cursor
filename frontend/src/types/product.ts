@@ -18,6 +18,7 @@ export interface Product {
   is_active: boolean;
   is_available?: boolean;
   views?: number;
+  favorites_count?: number;
   harvest_date?: string;
   expiry_date?: string;
   created_at: string;
