@@ -1,0 +1,56 @@
+# Mantouji.ma Development Rules
+
+## Project Structure
+
+- `/backend/` - Flask API with Blueprints
+- `/frontend/` - React app with TailwindCSS
+- `/database/` - SQL scripts and migrations
+- `/ai/` - ML models and OpenAI integration
+- `/docs/` - API documentation and project docs
+- `/tests/` - Unit and integration tests
+
+## Code Organization
+
+- Use Flask Blueprints for API organization
+- Create reusable React components
+- Follow RESTful API conventions
+- Use TypeScript for frontend (optional but recommended)
+- Implement proper error handling and logging
+
+## Development Workflow
+
+1. Always update `task_to_do.md` after completing features
+2. Write tests for new features
+3. Document API endpoints
+4. Keep tasks atomic and testable
+5. Follow priority order: High → Medium → Low
+6. Never push broken code
+
+## File Naming
+
+- Backend: snake_case (e.g., `user_management.py`)
+- Frontend: PascalCase for components (e.g., `ProductCard.tsx`)
+- Database: snake_case (e.g., `user_schema.sql`)
+- Tests: test\__.py or _.test.js
+
+## Git Workflow
+
+- Create feature branches for each task
+- Commit frequently with descriptive messages
+- Use conventional commits format
+- Always test before marking tasks as Done
+
+## Security Guidelines
+
+- Never commit API keys or secrets
+- Use environment variables for configuration
+- Implement proper input validation
+- Follow OWASP security practices
+
+## Code Quality
+
+- Write clean, readable code
+- Add comments for complex logic
+- Use consistent formatting
+- Implement proper error handling
+- Follow DRY principles
