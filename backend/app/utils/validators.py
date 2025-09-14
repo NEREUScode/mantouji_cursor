@@ -56,3 +56,19 @@ def validate_coordinates(latitude: Any, longitude: Any) -> tuple[bool, str]:
         return True, ""
     except (ValueError, TypeError):
         return False, "Coordinates must be valid numbers"
+
+def validate_price(price: Any) -> bool:
+    """Validate product price"""
+    try:
+        num = float(price)
+        return num > 0
+    except (ValueError, TypeError):
+        return False
+
+def validate_stock_quantity(quantity: Any) -> bool:
+    """Validate stock quantity"""
+    try:
+        num = int(quantity)
+        return num >= 0
+    except (ValueError, TypeError):
+        return False

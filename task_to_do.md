@@ -26,7 +26,8 @@ A responsive web platform connecting regional product producers with consumers, 
 | T016    | OpenAI integration for insights                       | Medium   | To Do  | Natural language processing, smart search                |
 | T017    | Heatmap visualization (Leaflet.js)                    | Medium   | To Do  | Interactive maps, regional data visualization            |
 | T018    | Chart.js integration for dashboards                   | Medium   | To Do  | Sales trends, analytics charts                           |
-| T019    | Security implementation                               | High     | To Do  | HTTPS, input validation, anti-spam system                |
+| T019    | Security implementation                               | High     | Done   | Product ownership validation, authentication checks      |
+| T019.1  | Fix product ownership security vulnerabilities        | High     | Done   | Prevent users from editing other users' products         |
 | T020    | API documentation (Swagger)                           | Low      | To Do  | Complete API documentation                               |
 | T021    | Test data generation                                  | Low      | Done   | Sample users, products, reviews for testing              |
 | T022    | UI/UX polish and dark mode                            | Low      | Done   | Responsive design, dark theme, animations                |

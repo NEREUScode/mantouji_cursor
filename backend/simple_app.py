@@ -341,14 +341,52 @@ def get_products():
 
 @app.route('/api/products', methods=['POST'])
 def create_product():
+    # Check for authentication token
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    # Extract token and validate (simplified for demo)
+    token = auth_header.split(' ')[1]
+    if not token.startswith('token_'):
+        return jsonify({'error': 'Invalid token format'}), 401
+    
+    # Extract user ID from token
+    try:
+        user_id = int(token.split('_')[1])
+        user = next((u for u in users if u['id'] == user_id), None)
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+        
+        # Check if user is producer or admin
+        if user['role'] not in ['producer', 'admin']:
+            return jsonify({'error': 'Only producers and admins can create products'}), 403
+    except (IndexError, ValueError):
+        return jsonify({'error': 'Invalid token'}), 401
+    
     data = request.get_json()
+    
+    # Validate required fields
+    required_fields = ['name', 'description', 'price', 'category']
+    for field in required_fields:
+        if not data.get(field):
+            return jsonify({'error': f'Missing required field: {field}'}), 400
+    
+    # Validate price
+    try:
+        price = float(data['price'])
+        if price <= 0:
+            return jsonify({'error': 'Price must be positive'}), 400
+    except (ValueError, TypeError):
+        return jsonify({'error': 'Invalid price format'}), 400
+    
     product = {
         'id': len(products) + 1,
         'name': data.get('name'),
         'description': data.get('description'),
-        'price': data.get('price'),
+        'price': price,
         'category': data.get('category'),
-        'producer_id': data.get('producer_id'),
+        'producer_id': user_id,  # Always use authenticated user as producer
         'image_url': data.get('image_url', ''),
         'stock_quantity': data.get('stock_quantity', 0),
         'is_active': data.get('is_active', True),
@@ -384,11 +422,44 @@ def get_product(product_id):
 
 @app.route('/api/products/<int:product_id>', methods=['PUT'])
 def update_product(product_id):
+    # Check for authentication token
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    # Extract token and validate
+    token = auth_header.split(' ')[1]
+    if not token.startswith('token_'):
+        return jsonify({'error': 'Invalid token format'}), 401
+    
+    # Extract user ID from token
+    try:
+        user_id = int(token.split('_')[1])
+        user = next((u for u in users if u['id'] == user_id), None)
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+    except (IndexError, ValueError):
+        return jsonify({'error': 'Invalid token'}), 401
+    
     product = next((p for p in products if p['id'] == product_id), None)
     if not product:
         return jsonify({'error': 'Product not found'}), 404
     
+    # Check ownership or admin role
+    if product['producer_id'] != user_id and user['role'] != 'admin':
+        return jsonify({'error': 'You can only edit your own products'}), 403
+    
     data = request.get_json()
+    
+    # Validate price if provided
+    if 'price' in data:
+        try:
+            price = float(data['price'])
+            if price <= 0:
+                return jsonify({'error': 'Price must be positive'}), 400
+        except (ValueError, TypeError):
+            return jsonify({'error': 'Invalid price format'}), 400
+    
     product.update({
         'name': data.get('name', product['name']),
         'description': data.get('description', product['description']),
@@ -408,10 +479,33 @@ def update_product(product_id):
 
 @app.route('/api/products/<int:product_id>', methods=['DELETE'])
 def delete_product(product_id):
+    # Check for authentication token
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    # Extract token and validate
+    token = auth_header.split(' ')[1]
+    if not token.startswith('token_'):
+        return jsonify({'error': 'Invalid token format'}), 401
+    
+    # Extract user ID from token
+    try:
+        user_id = int(token.split('_')[1])
+        user = next((u for u in users if u['id'] == user_id), None)
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+    except (IndexError, ValueError):
+        return jsonify({'error': 'Invalid token'}), 401
+    
     global products
     product = next((p for p in products if p['id'] == product_id), None)
     if not product:
         return jsonify({'error': 'Product not found'}), 404
+    
+    # Check ownership or admin role
+    if product['producer_id'] != user_id and user['role'] != 'admin':
+        return jsonify({'error': 'You can only delete your own products'}), 403
     
     products = [p for p in products if p['id'] != product_id]
     return jsonify({'message': 'Product deleted successfully'})
@@ -420,6 +514,50 @@ def delete_product(product_id):
 def get_categories():
     categories = list(set(p.get('category', '') for p in products if p.get('category')))
     return jsonify({'categories': categories})
+
+@app.route('/api/products/my-products', methods=['GET'])
+def get_my_products():
+    # Check for authentication token
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({'error': 'Authentication required'}), 401
+    
+    # Extract token and validate
+    token = auth_header.split(' ')[1]
+    if not token.startswith('token_'):
+        return jsonify({'error': 'Invalid token format'}), 401
+    
+    # Extract user ID from token
+    try:
+        user_id = int(token.split('_')[1])
+        user = next((u for u in users if u['id'] == user_id), None)
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+        
+        # Check if user is producer or admin
+        if user['role'] not in ['producer', 'admin']:
+            return jsonify({'error': 'Only producers and admins can view their products'}), 403
+    except (IndexError, ValueError):
+        return jsonify({'error': 'Invalid token'}), 401
+    
+    # Get user's products
+    user_products = [p for p in products if p['producer_id'] == user_id]
+    
+    # Add producer information to each product
+    for product in user_products:
+        product['producer'] = {
+            'id': user['id'],
+            'username': user['username'],
+            'first_name': user.get('first_name'),
+            'last_name': user.get('last_name'),
+            'city': user.get('city'),
+            'region': user.get('region')
+        }
+    
+    return jsonify({
+        'products': user_products,
+        'count': len(user_products)
+    })
 
 # Reviews and Ratings endpoints
 @app.route('/api/products/<int:product_id>/reviews', methods=['GET'])
