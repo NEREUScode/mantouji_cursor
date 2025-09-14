@@ -258,6 +258,13 @@ def get_users():
         'count': len(users)
     })
 
+@app.route('/api/users/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = next((u for u in users if u['id'] == user_id), None)
+    if user:
+        return jsonify(user)
+    return jsonify({'error': 'User not found'}), 404
+
 @app.route('/api/users', methods=['POST'])
 def create_user():
     data = request.get_json()
@@ -302,6 +309,19 @@ def get_products():
     if max_price is not None:
         filtered_products = [p for p in filtered_products if p.get('price', 0) <= max_price]
     
+    # Add producer information to each product
+    for product in filtered_products:
+        producer = next((u for u in users if u['id'] == product['producer_id']), None)
+        if producer:
+            product['producer'] = {
+                'id': producer['id'],
+                'username': producer['username'],
+                'first_name': producer.get('first_name'),
+                'last_name': producer.get('last_name'),
+                'city': producer.get('city'),
+                'region': producer.get('region')
+            }
+    
     # Pagination
     start = (page - 1) * per_page
     end = start + per_page
@@ -343,6 +363,19 @@ def get_product(product_id):
     product = next((p for p in products if p['id'] == product_id), None)
     if not product:
         return jsonify({'error': 'Product not found'}), 404
+    
+    # Add producer information
+    producer = next((u for u in users if u['id'] == product['producer_id']), None)
+    if producer:
+        product['producer'] = {
+            'id': producer['id'],
+            'username': producer['username'],
+            'first_name': producer.get('first_name'),
+            'last_name': producer.get('last_name'),
+            'city': producer.get('city'),
+            'region': producer.get('region')
+        }
+    
     return jsonify({'product': product})
 
 @app.route('/api/products/<int:product_id>', methods=['PUT'])

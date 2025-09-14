@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   Star,
   Heart,
@@ -9,6 +9,8 @@ import {
   Share2,
   Minus,
   Plus,
+  User,
+  MapPin,
 } from "lucide-react";
 import { Product } from "../../types/product";
 import { useAuth } from "../../contexts/AuthContext";
@@ -209,6 +211,42 @@ const ProductDetail: React.FC = () => {
               <div className="text-3xl font-bold text-primary-600 mb-4">
                 {product.price} MAD
               </div>
+
+              {/* Producer Information */}
+              {product.producer && (
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
+                        <User className="h-5 w-5 text-primary-600 dark:text-primary-400" />
+                      </div>
+                      <div>
+                        <Link
+                          to={`/producer/${product.producer.id}`}
+                          className="text-lg font-medium text-gray-900 dark:text-white hover:text-primary-600 transition-colors"
+                        >
+                          {product.producer.username}
+                        </Link>
+                        {product.producer.city && (
+                          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                            <MapPin className="h-3 w-3 mr-1" />
+                            <span>{product.producer.city}</span>
+                            {product.producer.region && (
+                              <span>, {product.producer.region}</span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <Link
+                      to={`/producer/${product.producer.id}`}
+                      className="text-primary-600 hover:text-primary-700 text-sm font-medium"
+                    >
+                      View Profile
+                    </Link>
+                  </div>
+                </div>
+              )}
 
               <p className="text-gray-600 dark:text-gray-400 mb-6">
                 {product.description}

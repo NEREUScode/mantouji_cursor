@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, Filter, Star, Heart, Eye, ShoppingCart } from "lucide-react";
+import { Search, Star, Heart, Eye, ShoppingCart, User } from "lucide-react";
 import { Product } from "../../types/product";
 import { useAuth } from "../../contexts/AuthContext";
 
@@ -297,6 +297,22 @@ const ProductList: React.FC = () => {
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
                       {product.description}
                     </p>
+
+                    {/* Producer Info */}
+                    {product.producer && (
+                      <div className="mb-3">
+                        <Link
+                          to={`/producer/${product.producer.id}`}
+                          className="flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-primary-600 transition-colors"
+                        >
+                          <User className="h-4 w-4 mr-1" />
+                          <span className="font-medium">{product.producer.username}</span>
+                          {product.producer.city && (
+                            <span className="ml-1">• {product.producer.city}</span>
+                          )}
+                        </Link>
+                      </div>
+                    )}
 
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-bold text-primary-600">

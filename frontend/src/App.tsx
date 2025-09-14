@@ -10,8 +10,10 @@ import Register from "./pages/Auth/Register";
 import Products from "./pages/Products";
 import ProductList from "./pages/Products/ProductList";
 import ProductDetail from "./pages/Products/ProductDetail";
+import ProductForm from "./pages/Products/ProductForm";
 import ProducerDashboard from "./pages/Dashboard/ProducerDashboard";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
+import ProducerProfile from "./pages/Profile/ProducerProfile";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
@@ -39,43 +41,54 @@ function App() {
                 <Route path="/register" element={<Register />} />
 
                 {/* Protected Routes */}
-                <Route path="/" element={<Layout />}>
-                  <Route index element={<Home />} />
-                  <Route path="products" element={<ProductList />} />
-                  <Route path="products/:id" element={<ProductDetail />} />
-                  <Route
-                    path="dashboard"
-                    element={
-                      <ProtectedRoute>
-                        <Dashboard />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="dashboard/producer"
-                    element={
-                      <ProtectedRoute>
-                        <ProducerDashboard />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="dashboard/admin"
-                    element={
-                      <ProtectedRoute>
-                        <AdminDashboard />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="profile"
-                    element={
-                      <ProtectedRoute>
-                        <Profile />
-                      </ProtectedRoute>
-                    }
-                  />
-                </Route>
+                           <Route path="/" element={<Layout />}>
+                             <Route index element={<Home />} />
+                             <Route path="products" element={<ProductList />} />
+                             <Route path="products/:id" element={<ProductDetail />} />
+                             <Route path="products/new" element={
+                               <ProtectedRoute>
+                                 <ProductForm />
+                               </ProtectedRoute>
+                             } />
+                             <Route path="products/:id/edit" element={
+                               <ProtectedRoute>
+                                 <ProductForm />
+                               </ProtectedRoute>
+                             } />
+                             <Route path="producer/:id" element={<ProducerProfile />} />
+                             <Route
+                               path="dashboard"
+                               element={
+                                 <ProtectedRoute>
+                                   <Dashboard />
+                                 </ProtectedRoute>
+                               }
+                             />
+                             <Route
+                               path="dashboard/producer"
+                               element={
+                                 <ProtectedRoute>
+                                   <ProducerDashboard />
+                                 </ProtectedRoute>
+                               }
+                             />
+                             <Route
+                               path="dashboard/admin"
+                               element={
+                                 <ProtectedRoute>
+                                   <AdminDashboard />
+                                 </ProtectedRoute>
+                               }
+                             />
+                             <Route
+                               path="profile"
+                               element={
+                                 <ProtectedRoute>
+                                   <Profile />
+                                 </ProtectedRoute>
+                               }
+                             />
+                           </Route>
               </Routes>
             </div>
           </Router>
